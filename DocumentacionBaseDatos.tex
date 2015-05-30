@@ -52,8 +52,9 @@ Se define un shell llamado consola, (define (consola), esta función tiene un re
 para verificar si es alguno de los comandos definidos.\\
 Tiene una condición de parada cuando se escriba "exit".\\
 En caso de ingresar un comando valido el programa procede a realizar la operación, verificando primero que la entrada sea string.\\
+Este shell le pasa lo captado a una funcion verifica que como dice el nombre nos verifica el comando usado y procede a realizarlo.\\
 Para saber que comando se usa "(let ((comando (car(string-split ls))))" con esto se verifica la variable comando que al usar el string-split nos hace la linea
-en palabras separadas ejemplo: "hola esto es una prueba"  al aplicarle el string-split $->$ "hola" "esto" "es" "una" "prueba" , ya con eso le hacemos car a 
+en palabras separadas ejemplo: "hola esto es una prueba"  al aplicarle el string-split $\rightarrow$ "hola" "esto" "es" "una" "prueba" , ya con eso le hacemos car a 
 la variable y nos dará el primer elemento, que para el caso de nuestro programa debería ser el comando a usar.\\\
 
 Comando ct:\\
@@ -62,7 +63,15 @@ Se tiene la función y se verifica si va a contener algo o no, en caso de que no
 se tomas los datos y se pasan a una función auxiliar recursiva, la función escribe en el archivo los datos separados por dos puntos ":", que va a ser nuestro
 separador para facilitar las cosas.\\\
 
-Comando isn:
+Comando isn:\\
+Para este comando se debe hacer una validación especial, esto porque el comando puede venir de dos maneras.\\
+En la primera se indica la tabla en la que se va a insertar información, y se incluyen en orden datos para todas y cada una de las columnas de esa tabla, como por ejemplo:
+"ins estud 2012001 julio 5554444 ", este caso no tiene nada especial.\\
+En el segundo formato se indica por medio de una lista el nombre de las columnas que corresponden a los datos incluidos. No es necesario incluir datos para todas las
+columnas, pero sí debe haber un dato para la llave como por ejemplo: "ins estud (nombre carnet) maria 2010002 "\\
+Para implementar este segundo, se crea una verificación guardando en una variable el tercer elemento (let ((verif(car(cdr(cdr( string-split entrada )))))), el primero corresponde al comando, el segundo a la llave y el tercero puede ser una columna o en este segundo caso es una lista y la sintaxis del comando indica que tiene paréntesis. Tomando esa palabra con el uso de string-ref podemos obtener el elementos que queramos de un string, esta función pasa a char la palabra y nos devuelve el elemento que le indiquemos, ejemplo: la palabra "heisenberg" le aplicamos el string-ref y se obtiene $\#$h $\#$e $\#$i $\#$s $\#$e $\#$n $\#$b $\#$e $\#$r $\#$g
+
+
 
 
 \end{flushleft}
@@ -96,9 +105,13 @@ del programa que funcionan.
 
 \begin{flushleft}
 
-7. Problemas encontrados: descripción detallada, intentos de solución sin éxito,
-solución encontradas con su descripción detallada, recomendaciones,
-conclusiones y bibliografía consultada para este problema específico.
+7. Problemas encontrados: descripción detallada, intentos de solución sin éxito, solución encontradas con su descripción detallada, recomendaciones, conclusiones y bibliografía consultada para este problema específico.
+
+Un problema encontrado fue a la hora de escribir en archivos, el problema es que con la función creada por alguna razón al pasarle un newline 
+en lugar de hacer el "$\backslash$n" escribia el proceso newline, ejemplo "\(<\)$\#$procedure:newline\(>\)"\\
+Para poder hacer el "enter" al final de cada linea se crea otra función para hacerlo.\\
+ 
+
 
 \end{flushleft}
 
@@ -128,7 +141,7 @@ Getting a line of user input in Scheme? - Stack Overflow (2010, 04 de Julio). Re
 demas (2011, 07 de Octubre). Scheme - String split function - Stack Overflow Recuperado el 30 de Mayo del 2015, de https://stackoverflow.com/questions/7691769/string-split-function
 
 
-
+artofproblemsolving (s. f.). LaTeX:Symbols Recuperado de http://www.artofproblemsolving.com/wiki/index.php/LaTeX%3ASymbols
 
 
 
