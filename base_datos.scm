@@ -137,6 +137,12 @@
 
 ;Se define una consola, consiste en un read-line.
 (define (base-datos)
+  (display "Base de Datos en Scheme, creado por Maikol y Frander")
+  (newline)
+  (display "Los comandos que puede usar son: ct, ins, sel, act, bo, ir, boir y exit para salir")
+  (newline)
+  (display "Para mas info puede revisar el manual de usuario en la documentación")
+  (newline)
   (let ((entrada (read-line))) 
     (cond ((equal? entrada "exit") "Gracias por utilizar nuestro programa");condición de parada
           (else (cond ((string? entrada)(verifica entrada ))(base-datos))))));si no es la condición de parada entra al main
@@ -145,16 +151,18 @@
 ;Se define una funcion que verifica los comandos
 (define (verifica entrada)
   (let ((comando (car(string-split entrada))));creamos la variable comando con el primer elemento leido del read-line
-    (cond ((string=?  comando  "ct");le pasamos dos parametros, el primero el nombre de la tabla y lo siguiente son las columnas
-         (ct (car(cdr(string-split entrada))) (cdr(cdr(string-split entrada)))))
+    ;y se verifica 
+    (cond ((string=?  comando  "ct");verifica el comando ct
+           ;le pasamos dos parametros, el primero el nombre de la tabla y lo siguiente son las columnas
+           (ct (car(cdr(string-split entrada))) (cdr(cdr(string-split entrada)))))
           
           ((string=? comando "ins");este comando tiene dos formatos. Para determinar cuando se usa cada uno se verifica
            ;guardamos en una variable el simbolo siguiente a la llave
-           (let ((verif(car(cdr(cdr( string-split entrada ))))))
-             (cond ((char=? #\( (string-ref verif 0 ))
-                (ins (car(cdr( string-split entrada )))))
-                 (else ins( (car(cdr( string-split entrada )))null ;columnas
-                          (cdr(cdr( string-split entrada ))))))))
+           (let ((verif(car(cdr(cdr( string-split entrada ))))));variable verif donde se guarda el tercer elemento de la entrada
+             (cond ((char=? #\( (string-ref verif 0 ));verificamos el tipo de formato de ins
+                    (ins (car(cdr( string-split entrada )))))
+                   (else ins( (car(cdr( string-split entrada )))null ;columnas
+                                                                (cdr(cdr( string-split entrada ))))))))
         
         [(string=? ( car(string-split entrada ) ) "sel")
          (cond [(char=? #\( (string-ref (car(cdr(cdr( string-split entrada )))) 0 ))
@@ -172,8 +180,7 @@
         [(string=? ( car(string-split entrada) ) "boir") (boir (cdr (string-split entrada)))]
         [(string=? ( car(string-split entrada) ) "ir")   (ir   (cdr (string-split entrada)))]
         [(string=? ( car(string-split entrada) ) "bo")   (bo   (cdr (string-split entrada)))]
-        [(string=? ( car(string-split entrada) ) "info")   (display "Base de Datos en Scheme, creado por Maikol y Frander")(newline)
-                                                      (display "Los comandos que puede usar son: ct, ins, sel, act, bo, ir, boir")
+        [(string=? ( car(string-split entrada) ) "man")  (display "Los comandos que puede usar son: ct, ins, sel, act, bo, ir, boir")
                                                       (newline)]
       )
   (base-datos)

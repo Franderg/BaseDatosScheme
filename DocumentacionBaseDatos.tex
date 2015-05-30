@@ -34,8 +34,50 @@
 
 \begin{flushleft}
 
-1. Manual de usuario: cómo ejecutar el programa, incluir requerimientos de
-Hardware y Software
+1. Manual de usuario: cómo ejecutar el programa, incluir requerimientos de Hardware y Software\\\
+
+El programa fue escrito en scheme utlizando el IDE DrRacket.\\
+La función principal es llama "base-datos", para correr el programa basta con correr dicha función de la siguiente manera:\\
+(base-datos)\\
+Una vez se inicie desplegara un mensaje de bienvenida e información de los comandos a utilizar. En esta sección se explica la forma de uso.\\
+
+La información estará almacenada en “tablas” que son creadas especificando el nombre de la tabla y el nombre de las columnas. El comando ct (crear Tabla) es el primero a explicarse. Crea la tabla estud con los datos carnet, nombre y telefono.\\\
+
+Sintaxis del comando ct:\\
+ct estud carnet nombre telefono\\
+ct estud2 carnet nombre telefono \\\
+
+La primera columna es el identificador único de la tabla (llave primaria), el cual debe ser diferente para todas las filas que se incluyan en la tabla.\\\
+
+Los datos se incluyen en las tablas por medio del comando ins, insertar, el cual tiene dos formatos. En el primero se indica la tabla en la que se va a 
+insertar información, y se incluyen en orden datos para todas y cada una de las columnas de esa tabla Por ejemplo:\\
+Sintaxis de ins:\\
+ins estud 2012001 julio 5554444\\\
+
+En el segundo formato se indica por medio de una lista el nombre de las columnas que corresponden a los datos incluidos. No es necesario incluir datos para todas las
+columnas, pero sí debe haber un dato para el identificador (llave) Por ejemplo:\\
+Sintaxis de ins:\\
+ins estud (nombre carnet) maria 2010002 \\
+ins estud2 (nombre carnet) maria (2012001 True 2012)\\\
+
+La operación sel, seleccionar, localiza en una tabla información que cumpla con la condición especificada. Por ejemplo, la siguiente instrucción.\\
+Sintaxis sel:\\
+sel matricula (carnet nota) siglaCur ce3104\\\
+
+La operación act, actualizar, permite actualizar valores para una tupla. La operación toma como parámetros el nombre de la tabla, el valor de la 
+llave de la tupla que se va a modificar, y una lista de pares nombre-valor con los valores nuevos de las columnas especificadas. Por ejemplo:\\
+Sintaxis act:\\
+act estud 2012001 nombre julio \\
+act estud 2010002 telefono 5557777 nombre marta\\\
+
+
+
+
+ 
+
+
+
+
 
 \end{flushleft}
 
@@ -69,8 +111,8 @@ En la primera se indica la tabla en la que se va a insertar información, y se i
 "ins estud 2012001 julio 5554444 ", este caso no tiene nada especial.\\
 En el segundo formato se indica por medio de una lista el nombre de las columnas que corresponden a los datos incluidos. No es necesario incluir datos para todas las
 columnas, pero sí debe haber un dato para la llave como por ejemplo: "ins estud (nombre carnet) maria 2010002 "\\
-Para implementar este segundo, se crea una verificación guardando en una variable el tercer elemento (let ((verif(car(cdr(cdr( string-split entrada )))))), el primero corresponde al comando, el segundo a la llave y el tercero puede ser una columna o en este segundo caso es una lista y la sintaxis del comando indica que tiene paréntesis. Tomando esa palabra con el uso de string-ref podemos obtener el elementos que queramos de un string, esta función pasa a char la palabra y nos devuelve el elemento que le indiquemos, ejemplo: la palabra "heisenberg" le aplicamos el string-ref y se obtiene $\#$h $\#$e $\#$i $\#$s $\#$e $\#$n $\#$b $\#$e $\#$r $\#$g
-
+Para implementar este segundo, se crea una verificación guardando en una variable el tercer elemento\\
+(let ((verif(car(cdr(cdr( string-split entrada )))))), el primero corresponde al comando, el segundo a la llave y el tercero puede ser una columna o en este segundo caso es una lista y la sintaxis del comando indica que tiene paréntesis. Tomando esa palabra con el uso de string-ref podemos obtener el elementos que queramos de un string, esta función pasa a char la palabra y nos devuelve el elemento que le indiquemos, ejemplo: la palabra "heisenberg" le aplicamos el string-ref y se obtiene $\#$h $\#$e $\#$i $\#$s $\#$e $\#$n $\#$b $\#$e $\#$r $\#$g, con eso nos daremos cuenta de cual de las dos maneras se esta ingresando. Se verifica en este caso el ejemplo "heisenberg" el primer elemento es la $\#$h para el segundo caso se debería de obtener un paréntesis (. Como restriccion para este comando se debe escribir junto el paréntesis con el dato de la columna ejemplo "ins estud (nombre carnet) maria 2010002" donde el tercer elemento seria (nombre.\\
 
 
 
