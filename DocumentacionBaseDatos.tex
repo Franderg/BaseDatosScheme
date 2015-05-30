@@ -1,0 +1,142 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\makeatletter
+
+%Frander Granados Vega
+%201117284
+%Ingenier\'i­a en Computadores
+
+\pdfinfo{%
+  /Title    (Documentaci\'{o}n)
+  /Author   (Frander Granados Vega)
+}
+
+
+\begin{document}
+\begin{center}
+{\LARGE Tecnol\'{o}gico de Costa Rica \\[2 cm]}
+
+{\Large Lenguajes, compiladores e intérpretes \\[3 cm]}
+
+{\Large Ingenier\'{i}a en Computadores \\[3 cm]}
+
+{\Large Primer Proyecto programado \\[3 cm]}
+
+{\large Estudiantes: \\[0.3 cm] }
+{\Large Frander Granados 201117284 \\}
+{\Large Maikol Barrantes 201230364\\[3 cm]}
+
+{\Large I Semestre, 2015 \\[2 cm] }
+\end{center}
+
+
+\newpage
+
+\begin{flushleft}
+
+1. Manual de usuario: cómo ejecutar el programa, incluir requerimientos de
+Hardware y Software
+
+\end{flushleft}
+
+\begin{flushleft}
+
+2. Descripción de las estructuras de datos desarrolladas.
+
+\end{flushleft}
+
+\begin{flushleft}
+3. Descripción de las principales funciones desarrollados.\\\
+
+Se define un shell llamado consola, (define (consola), esta función tiene un read-line que se guarda en una variable de entrada, dicha variable es analizada
+para verificar si es alguno de los comandos definidos.\\
+Tiene una condición de parada cuando se escriba "exit".\\
+En caso de ingresar un comando valido el programa procede a realizar la operación, verificando primero que la entrada sea string.\\
+Para saber que comando se usa "(let ((comando (car(string-split ls))))" con esto se verifica la variable comando que al usar el string-split nos hace la linea
+en palabras separadas ejemplo: "hola esto es una prueba"  al aplicarle el string-split $->$ "hola" "esto" "es" "una" "prueba" , ya con eso le hacemos car a 
+la variable y nos dará el primer elemento, que para el caso de nuestro programa debería ser el comando a usar.\\\
+
+Comando ct:\\
+Para este comando se tiene el primer elemento después del comando ct debe ser el nombre de la tabla, para nuestro caso va a ser el nombre del archivo.\\
+Se tiene la función y se verifica si va a contener algo o no, en caso de que no vaya a contener nada se crea el archivo vacío, si se van a agregar columnas
+se tomas los datos y se pasan a una función auxiliar recursiva, la función escribe en el archivo los datos separados por dos puntos ":", que va a ser nuestro
+separador para facilitar las cosas. 
+
+
+
+\end{flushleft}
+
+\begin{flushleft}
+
+4. Problemas conocidos: En está sección se detalla cualquier problema que no se ha podido solucionar en el trabajo.
+
+\end{flushleft}
+
+\begin{flushleft}
+5. Actividades realizadas por estudiante: Este es un resumen de las bitácoras
+de cada estudiante ( estilo timesheet) en términos del tiempo invertido para
+una actividad específica que impactó directamente el desarrollo del trabajo,
+de manera breve (no más de una línea) se describe lo que se realizó, la
+cantidad de horas invertidas y la fecha en la que se realizó. Se deben sumar
+las horas invertidas por cada estudiante, sean conscientes a la hora de
+realizar esto el profesor determinará si los reportes están acordes al
+producto entregado.
+
+\end{flushleft}
+
+\begin{flushleft}
+
+6. Corridas de ejemplo: Mostrar los resultados obtenidos al correr la secuencia
+de comandos que se muestra en la página anterior. En caso de
+implementación parcial de la tarea mostrar la ejecución de aquellas partes
+del programa que funcionan.
+
+\end{flushleft}
+
+\begin{flushleft}
+
+7. Problemas encontrados: descripción detallada, intentos de solución sin éxito,
+solución encontradas con su descripción detallada, recomendaciones,
+conclusiones y bibliografía consultada para este problema específico.
+
+\end{flushleft}
+
+\begin{flushleft}
+
+8. Conclusiones y Recomendaciones del proyecto.
+
+\end{flushleft}
+
+\begin{flushleft}
+
+9. Bibliografía consultada en todo el proyecto
+
+
+
+
+Documentación Racket
+
+Benson, B. (s. f.). 4.3 Strings Recuperado de http://docs.racket-lang.org/reference/strings.html
+
+Benson, B. (s. f.). 4.5 Characters Recuperado de http://docs.racket-lang.org/reference/characters.html$\#$\%$28def.$\_$\%28$\%28quote.$\_$~23$\sim$25kernel$\%$29.$\_$char
+$\sim3$f$\%$29$\%$29
+
+Getting a line of user input in Scheme? - Stack Overflow (2010, 04 de Julio). Recuperado de https://stackoverflow.com/questions/3173327/getting-a-line-of-user-input-in-scheme
+
+
+demas (2011, 07 de Octubre). Scheme - String split function - Stack Overflow Recuperado el 30 de Mayo del 2015, de https://stackoverflow.com/questions/7691769/string-split-function
+
+
+
+
+
+
+
+
+
+
+
+\end{flushleft}
+
+
+\end{document}
