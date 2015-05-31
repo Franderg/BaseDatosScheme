@@ -42,11 +42,14 @@
 (define (ins tabla valores columna)
   (cond ((and 
           (and
+           (and
            (and ;debe cumplir que exista la tabla y la columna sea una tupla
             (file-exists? tabla);verificamos que existe la tabla
-            (list? columna)) 
+            (list? columna)
+            (display columna))
+           (list? valores))
            (verificadorDeID tabla (car columna)))
-          (existsID? (cdr(file->lines tabla))(car valores)))
+          (existID (cdr(file->lines tabla))(car valores)))
      (ins-aux tabla (lineFormat (file->lines tabla)) columna valores 0)
      (escritura2 tabla))))
 
@@ -58,47 +61,39 @@
 
 
 ;Auxiliar function for ins. Makes the recursive part.
-(define (ins-aux pTabla pTablaList pColList pValList pFlag)
+(define (ins-aux tabla pTablaList pColList pValList pFlag)
   (cond
     ((empty? pTablaList))
     ((and (empty? pColList) (= 0 pFlag)))
     ((and (empty? pColList) (= 1 pFlag))
-     (write-to-file '"(nil)" pTabla #:mode'text #:exists'append)
-     (write-to-file '_ pTabla #:mode'text #:exists'append )
-     (ins-aux pTabla (cdr pTablaList) pColList pValList 1))
+     (escritura "(nulo)" tabla )
+     (escritura ":" tabla )
+     (ins-aux tabla (cdr pTablaList) pColList pValList 1))
     ((equal? (car pTablaList)(car pColList))
      (cond
        ((empty? pValList)
-        (write-to-file '"(nil)" pTabla #:mode'text #:exists'append)
-        (write-to-file '_ pTabla #:mode'text #:exists'append )
-        (ins-aux pTabla (cdr pTablaList) (cdr pColList) pValList 1))
+        (escritura "(nulo)" tabla )
+        (escritura ":" tabla )
+        (ins-aux tabla (cdr pTablaList) (cdr pColList) pValList 1))
        (else
-        (write-to-file (car pValList) pTabla #:mode'text #:exists'append)
-        (write-to-file '_ pTabla #:mode'text #:exists'append )
-        (ins-aux pTabla (cdr pTablaList) (cdr pColList) (cdr pValList)1))))
+        (escritura (car pValList) tabla)
+        (escritura ":" tabla )
+        (ins-aux tabla (cdr pTablaList) (cdr pColList) (cdr pValList)1))))
     ((eq? (equal? (car pTablaList)(car pColList)) #f )
-     (write-to-file '"(nil)" pTabla #:mode'text #:exists'append)
-     (write-to-file '_ pTabla #:mode'text #:exists'append )
-     (ins-aux pTabla (cdr pTablaList) pColList pValList 1))))
+     (escritura "(nulo)" tabla )
+     (escritura ":" tabla )
+     (ins-aux tabla (cdr pTablaList) pColList pValList 1))))
 
 ;Checks if the unique ID name exists.
-(define (verificadorDeID pTabla pID)
-  (equal? pID (car(lineFormat (file->lines pTabla)))))
+(define (verificadorDeID tabla pID)
+  (equal? pID (car(lineFormat (file->lines tabla)))))
 
-;Checks existant ID.
-;receives a list and searches for a existant IDvalue in the first column.
-(define (existsID? list pIDVal)
-  (cond
-    ((empty? list) #t) 
-    ((empty? (lineFormat list)) #t)
-    ((equal? pIDVal (car(lineFormat list))) #f)
-    (else (existsID? (cdr list) pIDVal))
-    ) 
-  )
+(define (lineFormat list)
+  (string-split 
+   (string-replace
+    (string-replace (string-replace(car list)"\"" "_") "___" "_")"__""_") "_"))
 
-(define (lineFormat list)(string-split (string-replace(string-replace (string-replace(car list)"\"" "_") "___" "_")"__""_") "_"))
-
-;##################################3
+;##################################
 (define (endof ls apd)
   (cond 
     [(char=? #\) (string-ref (car ls) ( - (string-length(car ls)) 1) )) (append apd (string-trim (car ls) ")" )) ]
@@ -109,28 +104,50 @@
   ( cond
        [(char=? #\) (string-ref (car ls) ( - (string-length(car ls)) 1) )) (cdr ls)]
        [else (lastof (cdr ls))]
-  )
-)
-(define sel
-  (lambda ()
-    (display "sel")))
+  ))
+  
+(define (tokenizer cadena token)
+  (let repetir ([palabra ""] [lista (string->list cadena)] [resultado '()]) 
+    (cond
+      ((and (eq? lista '()) (eq? palabra "")) resultado)
+      ((and (eq? lista '()) (not (eq? palabra ""))) (repetir "" lista (append resultado (list palabra))))
+      ((eq? (car lista) token) (repetir "" (cdr lista) (append resultado (list palabra)))) 
+      (else (repetir (string-append palabra (string(car lista))) (cdr lista) resultado) )
+      )))
 
-(define act
-  (lambda ()
-    (display "act")))
 
-(define (alt_list ls jmp)
+(define (existID identificador Listtabla)
   (cond
-    [(integer? (/ (length ls) 2) ) (cond
-                                     [(= (length ls) 2) (append jmp (car ls))]
-                                     [else (append jmp (alt_list (cdr(cdr ls )) jmp ))]
-                                   )]
-    [else (cond
-            [(= (length ls) 1) (append jmp (car ls))]
-            [else (append jmp (alt_list (cdr(cdr ls )) jmp ))]
-          )]
+    ((eq? Listtabla '())#f)
+    (else
+     (let ((carnet (car(tokenizer (car Listtabla) #\:))))
+       (cond ((string=? identificador carnet) #t)
+            (else
+             (existID identificador (cdr Listtabla))))))))
+
+(define sel (lambda (x y z) ( x y z ))
   )
-)
+
+;################################################################################################
+;comando act actualizar
+(define (act tabla carnet columnas valoresNuevos)
+  (cond 
+    ((eq? (existID carnet (leer-archivo tabla)) #t)
+     (bo tabla carnet);se borra de la tabla
+     (ins1 tabla (append(string-split(carnet)) valoresNuevos)))));se inserta con los nuevos valores
+
+;################################################################################################
+
+
+(define (alt_list datos salida)
+  (cond;primera condicion, queremos saber cuantos elementos se van a modificar
+    ((integer? (/ (length datos) 2) );vrificamos que la entrada sea par
+     (cond ((= (length datos) 2) (append salida (car datos)))
+       (else (append salida (alt_list (cdr(cdr datos )) salida )))))
+    (else 
+     (cond
+       ((= (length datos) 1) (append salida (car datos)))
+       (else (append salida (alt_list (cdr(cdr datos )) salida )))))))
 
 (define boir
   (lambda ()
@@ -154,38 +171,48 @@
 
 ;Se define una funcion que verifica los comandos
 (define (verifica entrada)
-  (let ((comando (car(string-split entrada))));creamos la variable comando con el primer elemento leido del read-line
-    ;y se verifica 
-    (cond ((string=?  comando  "ct");verifica el comando ct
+  (let ((comando (car(string-split entrada))));creamos la variable comando con el primer elemento leido del read-line y se verifica 
+    (cond 
+      ((string=? comando "ct");verifica el comando ct
            ;le pasamos dos parametros, el primero el nombre de la tabla y lo siguiente son las columnas
            (ct (car(cdr(string-split entrada))) (cdr(cdr(string-split entrada)))))
-          
-          ((string=? comando "ins");este comando tiene dos formatos. Para determinar cuando se usa cada uno se verifica
+      
+      ((string=? comando "ins");este comando tiene dos formatos. Para determinar cuando se usa cada uno se verifica
            ;guardamos en una variable el simbolo siguiente a la llave
            (let ((verif(car(cdr(cdr( string-split entrada ))))));variable verif donde se guarda el tercer elemento de la entrada
              (cond ((char=? #\( (string-ref verif 0 ));verificamos el tipo de formato de ins
-                    (ins (car(cdr( string-split entrada ))))); en caso de ser el que tiene tupla entra a este
+                    (ins (car(cdr( string-split entrada )))
+                         (append(list ( string-trim (car(cdr(cdr( string-split entrada )))) "(" )
+                              (endof(cdr(cdr(cdr( string-split entrada )))) '() )));cambiar por eliminar element
+                         (lastof(cdr(cdr( string-split entrada )))))); en caso de ser el que tiene tupla entra a este
                    ;sino hace el ins1, donde recibe 2 argumentos
                    (else
                     (ins1 (car(cdr( string-split entrada )))(cdr(cdr( string-split entrada ))))))))
-        
-        [(string=? ( car(string-split entrada ) ) "sel")
-         (cond [(char=? #\( (string-ref (car(cdr(cdr( string-split entrada )))) 0 ))
-                (sel (car(cdr( string-split entrada ))))]
-               [else sel( (car(cdr( string-split entrada ))) null ;columnas
-                                                        (cdr(cdr( string-split entrada ))))])]
-        [(string=? ( car(string-split entrada ) ) "act") 
-         (act (car(cdr( string-split entrada ))) ;table name
-              (car(cdr(cdr( string-split entrada )))) ;id
-              (append (list (car(cdr(cdr(cdr (string-split entrada))))))
-                      (list (alt_list (cdr(cdr(cdr(string-split entrada))))'() )) ) ;col names
-              (append (list (car(cdr(cdr(cdr(cdr(string-split entrada)))))))
-                      (list (alt_list (cdr(cdr(cdr(cdr(string-split entrada))))) '() )) ) ;new values
-                                                     )]
-        [(string=? ( car(string-split entrada) ) "boir") (boir (cdr (string-split entrada)))]
-        [(string=? ( car(string-split entrada) ) "ir")   (ir   (cdr (string-split entrada)))]
-        [(string=? ( car(string-split entrada) ) "bo")   (bo   (cdr (string-split entrada)))]
-        [(string=? ( car(string-split entrada) ) "man")    (display "Base de Datos en Scheme, creado por Maikol y Frander")
+      
+      ((string=? comando "sel")
+         (let ((verif(car(cdr(cdr( string-split entrada ))))));variable verif donde se guarda el tercer elemento de la entrada
+           (cond ((char=? #\( (string-ref verif 0 ));verificamos el parentesis para la correcta sintaxis del comando sel
+                  (sel (car(cdr( string-split entrada )))
+                       (append( list ( string-trim (car(cdr(cdr( string-split entrada )))) "(" )
+                              (endof(cdr(cdr(cdr( string-split entrada )))) '() ))))
+                  (lastof(cdr(cdr( string-split entrada )))))
+           (else (sel( (car(cdr( string-split entrada )))) null (cdr(cdr( string-split entrada ))))))))
+      
+      ((string=? comando "act");se verifica el comando act
+       (let (( tabla (car(cdr( string-split entrada )))));llave o tabla 
+         (let (( carnet (car(cdr(cdr( string-split entrada))))));ID
+           (let (( n (car(cdr(cdr(cdr (string-split entrada)))))));
+             (let (( columnas (cdr(cdr(cdr(string-split entrada))))));columnas que se modifican
+               (let (( name (car(cdr(cdr(cdr(cdr(string-split entrada))))))))
+                 (let ((nuevo (cdr(cdr(cdr(cdr(string-split entrada)))))));nuevo valor que se actualiza
+                   ;se le pasan 4 parametros, la tabla el carnet y los otros pueden ser datos a actualizar
+                   (act tabla carnet (append (list n)(list (alt_list columnas'()))) (append (list name)(list (alt_list nuevo '())))))))))))
+      
+      
+        [(string=? comando "boir") (boir (cdr (string-split entrada)))]
+        [(string=? comando "ir")   (ir   (cdr (string-split entrada)))]
+        [(string=? comando "bo")   (bo   (cdr (string-split entrada)))]
+        [(string=? comando "man")    (display "Base de Datos en Scheme, creado por Maikol y Frander")
                                                            (newline)
                                                            (display "Los comandos que puede usar son: ct, ins, sel, act, bo, ir, boir y exit para salir")
                                                            (newline)
