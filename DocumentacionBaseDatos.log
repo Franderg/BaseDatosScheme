@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.2.19)  30 MAY 2015 14:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.2.19)  30 MAY 2015 14:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -260,13 +260,13 @@ LaTeX Font Info:    ... okay on input line 15.
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 99.
+(Font)              <12> on input line 91.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 99.
+(Font)              <8> on input line 91.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 99.
+(Font)              <6> on input line 91.
  [3] [4]
-Overfull \hbox (40.09053pt too wide) in paragraph at lines 177--179
+Overfull \hbox (40.09053pt too wide) in paragraph at lines 169--171
 \OT1/cmr/m/n/12 lang.org/reference/characters.html$#$%$28\OML/cmm/m/it/12 def:$
 []$\OT1/cmr/m/n/12 %28$%28quote.$[]$ 23$\OMS/cmsy/m/n/12 ^^X$\OT1/cmr/m/n/12 25
 kernel$%$29.$[]$char 

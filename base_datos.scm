@@ -25,27 +25,37 @@
         (else 
          (cond ((list? datos );si vamos a ingresar algun dato
                 (cond ((null? datos) #f);verificamos si se debe agregar algo a la tabla
-                      (else (ct_auxiliar datos tabla))));vamos a una funcion auxiliar recursiva
+                      (else (auxiliar datos tabla))));vamos a una funcion auxiliar recursiva
                (else #f))))
   (escritura2 newline tabla));\n al final de los datos para mantener orden
 
-(define (ct_auxiliar datos tabla) ;funcion recursiva donde se escribe en la tabla la info
+(define (auxiliar datos tabla) ;funcion recursiva donde se escribe en la tabla la info
   (cond ((null? datos)#f);revisamos si no es null
         (else 
          (escritura (car datos) tabla ) ;escribimos en la tabla los datos
          (escritura ":" tabla ) ;como separador se va a usar los dos puntos :
-         (ct_auxiliar (cdr datos) tabla))));segimos con el resto de los datos
+         (auxiliar (cdr datos) tabla))));segimos con el resto de los datos
 
 ;##################################################################
 
 ;Comando ins estud 2012001 julio 5554444
-(define (ins tabla pColList pValList)
-  (cond ((and (and (and (and (file-exists? tabla);verificamos que existe la tabla
-                             (list? pColList)) (list? tabla))
-               (verificadorDeID tabla (car pColList)))
-          (existsID? (cdr(file->lines tabla))(car pValList)))
-     (ins-aux tabla (lineFormat (file->lines tabla)) pColList pValList 0)
+(define (ins tabla valores columna)
+  (cond ((and 
+          (and
+           (and ;debe cumplir que exista la tabla y la columna sea una tupla
+            (file-exists? tabla);verificamos que existe la tabla
+            (list? columna)) 
+           (verificadorDeID tabla (car columna)))
+          (existsID? (cdr(file->lines tabla))(car valores)))
+     (ins-aux tabla (lineFormat (file->lines tabla)) columna valores 0)
      (escritura2 tabla))))
+
+(define (ins1 tabla valores)
+  (let ((existe(file-exists? tabla)))
+    (cond ((equal? existe #t);verificamos que la tabla exista
+           (auxiliar valores tabla));se utiliza la misma funcion ct_auxiliar
+          (else (display "No se encuentra la tabla")(newline)))))
+
 
 ;Auxiliar function for ins. Makes the recursive part.
 (define (ins-aux pTabla pTablaList pColList pValList pFlag)
@@ -137,12 +147,6 @@
 
 ;Se define una consola, consiste en un read-line.
 (define (base-datos)
-  (display "Base de Datos en Scheme, creado por Maikol y Frander")
-  (newline)
-  (display "Los comandos que puede usar son: ct, ins, sel, act, bo, ir, boir y exit para salir")
-  (newline)
-  (display "Para mas info puede revisar el manual de usuario en la documentación")
-  (newline)
   (let ((entrada (read-line))) 
     (cond ((equal? entrada "exit") "Gracias por utilizar nuestro programa");condición de parada
           (else (cond ((string? entrada)(verifica entrada ))(base-datos))))));si no es la condición de parada entra al main
@@ -160,9 +164,10 @@
            ;guardamos en una variable el simbolo siguiente a la llave
            (let ((verif(car(cdr(cdr( string-split entrada ))))));variable verif donde se guarda el tercer elemento de la entrada
              (cond ((char=? #\( (string-ref verif 0 ));verificamos el tipo de formato de ins
-                    (ins (car(cdr( string-split entrada )))))
-                   (else ins( (car(cdr( string-split entrada )))null ;columnas
-                                                                (cdr(cdr( string-split entrada ))))))))
+                    (ins (car(cdr( string-split entrada ))))); en caso de ser el que tiene tupla entra a este
+                   ;sino hace el ins1, donde recibe 2 argumentos
+                   (else
+                    (ins1 (car(cdr( string-split entrada )))(cdr(cdr( string-split entrada ))))))))
         
         [(string=? ( car(string-split entrada ) ) "sel")
          (cond [(char=? #\( (string-ref (car(cdr(cdr( string-split entrada )))) 0 ))
@@ -180,8 +185,10 @@
         [(string=? ( car(string-split entrada) ) "boir") (boir (cdr (string-split entrada)))]
         [(string=? ( car(string-split entrada) ) "ir")   (ir   (cdr (string-split entrada)))]
         [(string=? ( car(string-split entrada) ) "bo")   (bo   (cdr (string-split entrada)))]
-        [(string=? ( car(string-split entrada) ) "man")  (display "Los comandos que puede usar son: ct, ins, sel, act, bo, ir, boir")
-                                                      (newline)]
-      )
-  (base-datos)
-))
+        [(string=? ( car(string-split entrada) ) "man")    (display "Base de Datos en Scheme, creado por Maikol y Frander")
+                                                           (newline)
+                                                           (display "Los comandos que puede usar son: ct, ins, sel, act, bo, ir, boir y exit para salir")
+                                                           (newline)
+                                                           (display "Para mas info puede revisar el manual de usuario en la documentación")
+                                                           (newline)])
+    (base-datos)))
