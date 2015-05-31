@@ -1,6 +1,9 @@
 \documentclass[12pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
 \makeatletter
+\usepackage{graphicx}
+
+
 
 %Frander Granados Vega
 %201117284
@@ -104,8 +107,12 @@ En la primera se indica la tabla en la que se va a insertar información, y se i
 En el segundo formato se indica por medio de una lista el nombre de las columnas que corresponden a los datos incluidos. No es necesario incluir datos para todas las
 columnas, pero sí debe haber un dato para la llave como por ejemplo: "ins estud (nombre carnet) maria 2010002 "\\
 Para implementar este segundo, se crea una verificación guardando en una variable el tercer elemento\\
-(let ((verif(car(cdr(cdr( string-split entrada )))))), el primero corresponde al comando, el segundo a la llave y el tercero puede ser una columna o en este segundo caso es una lista y la sintaxis del comando indica que tiene paréntesis. Tomando esa palabra con el uso de string-ref podemos obtener el elementos que queramos de un string, esta función pasa a char la palabra y nos devuelve el elemento que le indiquemos, ejemplo: la palabra "heisenberg" le aplicamos el string-ref y se obtiene $\#$h $\#$e $\#$i $\#$s $\#$e $\#$n $\#$b $\#$e $\#$r $\#$g, con eso nos daremos cuenta de cual de las dos maneras se esta ingresando. Se verifica en este caso el ejemplo "heisenberg" el primer elemento es la $\#$h para el segundo caso se debería de obtener un paréntesis (. Como restriccion para este comando se debe escribir junto el paréntesis con el dato de la columna ejemplo "ins estud (nombre carnet) maria 2010002" donde el tercer elemento seria (nombre.\\
+(let ((verif(car(cdr(cdr( string-split entrada )))))), el primero corresponde al comando, el segundo a la llave y el tercero puede ser una columna o en este segundo caso es una lista y la sintaxis del comando indica que tiene paréntesis. Tomando esa palabra con el uso de string-ref podemos obtener el elementos que queramos de un string, esta función pasa a char la palabra y nos devuelve el elemento que le indiquemos, ejemplo: la palabra "heisenberg" le aplicamos el string-ref y se obtiene $\#$h $\#$e $\#$i $\#$s $\#$e $\#$n $\#$b $\#$e $\#$r $\#$g, con eso nos daremos cuenta de cual de las dos maneras se esta ingresando. Se verifica en este caso el ejemplo "heisenberg" el primer elemento es la $\#$h para el segundo caso se debería de obtener un paréntesis (. Como restriccion para este comando se debe escribir junto el paréntesis con el dato de la columna ejemplo "ins estud (nombre carnet) maria 2010002" donde el tercer elemento seria (nombre.\\\
 
+Comando act:\\
+En este comando se realizan varias cosas, el comando recibe 4 datos, el primero es el archivo o llave, el segundo el ID que se desea actualizar, en caso 
+de que el ID no exista se devuelve un mensaje indicando al usuario que no existe el ID.\\
+El primer paso es borrar el ID de la tabla para luego agregarlo nuevamente con los datos nuevos.\\\
 
 
 \end{flushleft}
@@ -117,23 +124,38 @@ Para implementar este segundo, se crea una verificación guardando en una variab
 \end{flushleft}
 
 \begin{flushleft}
-5. Actividades realizadas por estudiante: Este es un resumen de las bitácoras
-de cada estudiante ( estilo timesheet) en términos del tiempo invertido para
-una actividad específica que impactó directamente el desarrollo del trabajo,
-de manera breve (no más de una línea) se describe lo que se realizó, la
-cantidad de horas invertidas y la fecha en la que se realizó. Se deben sumar
-las horas invertidas por cada estudiante, sean conscientes a la hora de
-realizar esto el profesor determinará si los reportes están acordes al
-producto entregado.
+5. Actividades realizadas por estudiante: Este es un resumen de las bitácoras de cada estudiante ( estilo timesheet) en términos del tiempo invertido para
+una actividad específica que impactó directamente el desarrollo del trabajo, de manera breve (no más de una línea) se describe lo que se realizó, la
+cantidad de horas invertidas y la fecha en la que se realizó. Se deben sumar las horas invertidas por cada estudiante, sean conscientes a la hora de
+realizar esto el profesor determinará si los reportes están acordes al producto entregado.
+
+Reunión para delegar tareas y procedimiento a seguir con la tarea 25-05-2015 19:00:00 a 20:00:00
+Se repasan datos del lenguaje Scheme, se investiga sobre manejo de archivos se inicia 26-05-2015 22:00:00, se finaliza 27-05-2015 00:30:00
+Reunion para ver avances 28-05-2015 21:30:00 a 23:00:00
+Se realiza shell, un read-line donde acepte los comandos necesarios para el proyecto se inicia 29-05-2015 16:00:00 se finaliza 18:00:00
+Se investiga sobre string en scheme en la documentación de DrRacket se inicia 29-05-2015 20:00:00 se finaliza 21:00:00
+Se realiza función ct, utilizada para crear tablas se inicia 29-05-2015 22:00:00 se finaliza 30-05-2015 01:00:00 
+
 
 \end{flushleft}
 
 \begin{flushleft}
 
-6. Corridas de ejemplo: Mostrar los resultados obtenidos al correr la secuencia
-de comandos que se muestra en la página anterior. En caso de
-implementación parcial de la tarea mostrar la ejecución de aquellas partes
-del programa que funcionan.
+6. Corridas de ejemplo: Mostrar los resultados obtenidos al correr la secuencia de comandos que se muestra en la página anterior. En caso de implementación parcial de la tarea mostrar la ejecución de aquellas partes del programa que funcionan.\\
+
+\includegraphics[scale=0.48]{ct1.png} \\\
+
+\includegraphics[scale=0.48]{ct2.png} \\\
+
+\includegraphics[scale=0.48]{ct3.png} \\\
+
+\includegraphics[scale=0.48]{ins1.png} \\\
+
+\includegraphics[scale=0.48]{ins2.png} \\\
+
+\includegraphics[scale=0.48]{man.png} \\\
+
+\includegraphics[scale=0.48]{man1.png} \\\
 
 \end{flushleft}
 
